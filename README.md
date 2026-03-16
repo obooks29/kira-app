@@ -1,4 +1,5 @@
-# Kira 🐰 — AI Co-Pilot for the Deaf & Hard of Hearing
+# Kira 🐰 — AI Agent for the Speech and Hearing Impaired
+
 
 > Built for the Amazon Nova AI Hackathon 2026
 
