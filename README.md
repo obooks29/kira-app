@@ -1,156 +1,81 @@
-# SenseVoice 🤲👂💬🛡️
-### The AI Co-Pilot for the Deaf and Mute
+# Kira 🐰 — AI Co-Pilot for the Deaf & Hard of Hearing
 
-> Built for the Amazon Nova AI Hackathon  
-> Powered by Amazon Nova 2 Sonic · Nova Multimodal Embeddings · Nova 2 Lite · Nova Act
+> Built for the Amazon Nova AI Hackathon 2026
 
----
+Kira is an Android mobile app that gives people who are deaf or have speech impairments a real voice — reading signs, classifying sounds, detecting danger, and speaking for them using Amazon Nova Lite, Nova Sonic, and Amazon Polly.
 
-## 🌍 What is SenseVoice?
+## Live Demo
+- **Nova Sonic Server:** https://kira-sonic-server.onrender.com
+- **Server Repo:** https://github.com/obooks29/kira-sonic-server
 
-SenseVoice gives 70 million deaf and mute people worldwide:
-- **A voice** — sign language to speech in real time
-- **Ears** — ambient sound classification and safety alerts  
-- **Conversation** — two-way live chat with anyone, no interpreter needed
-- **Safety** — one-shake SOS with GPS to emergency contacts
-- **Independence** — a Duolingo-style system that celebrates every milestone
+## Features
+- **My Voice** — Type or sign to speak, powered by Nova multimodal + Amazon Polly neural TTS
+- **My Ears** — Continuous sound detection with Nova AI enrichment and name detection
+- **My World** — Nova scene analysis reads aloud what the camera sees
+- **My Safety** — Nova writes personalised emergency SMS dispatched in 2 seconds
+- **Talk** — Two-way conversation assistant with Nova quick replies
+- **Caregiver Dashboard** — Daily Nova AI summaries for caregivers and family
+- **BunnieAgent** — 4-step autonomous agentic emergency pipeline
 
----
+## Tech Stack
+- React Native 0.73 (Android)
+- Amazon Nova Lite (`amazon.nova-lite-v1:0`)
+- Amazon Nova 2 Sonic (`amazon.nova-2-sonic-v1:0`)
+- Amazon Polly (Joanna, neural)
+- AWS Bedrock (us-east-1)
+- Custom AWS Signature V4 (no SDK)
+- Node.js WebSocket proxy server
 
-## 📱 Screens Overview
-
-| Screen | Phase | Description |
-|--------|-------|-------------|
-| Welcome | Onboarding | Animated 4-slide introduction |
-| Onboarding | Setup | Name, voice, caregiver setup |
-| Home | Core | Dashboard with XP, goals, module grid |
-| My Voice | Phase 1 | Sign language → speech + type mode |
-| Quick Phrases | Phase 1 | 200+ phrases across 7 categories |
-| My Ears | Phase 2 | Always-on sound classification |
-| Conversation | Phase 2 | Two-way live conversation |
-| My World | Phase 2 | Scene understanding via camera |
-| My Safety | Phase 3 | SOS, Emergency ID card, contacts |
-| Caregiver | Phase 3 | Parent/carer daily summary dashboard |
-| Milestones | Phase 3 | XP, levels, achievement system |
-| Personalize | Phase 4 | Voice personality + sign language |
-| Language Packs | Phase 4 | Domain vocabulary bundles |
-| Profile | Shared | User stats, streaks, quick links |
-| Settings | Shared | Accessibility + alert preferences |
-
----
-
-## 🚀 Quick Start
+## Setup
 
 ### Prerequisites
 - Node.js 18+
-- React Native CLI
-- Android Studio (Android) or Xcode (iOS/Mac)
-- Java JDK 17+
+- Android Studio + Android SDK
+- AWS account with IAM user having `AmazonBedrockFullAccess` + `AmazonPollyFullAccess`
 
 ### Installation
-
 ```bash
-# 1. Install dependencies
+git clone https://github.com/obooks29/kira-app.git
+cd kira-app
 npm install
-
-# 2. iOS only (Mac)
-cd ios && pod install && cd ..
-
-# 3. Configure AWS
-# Edit src/services/aws-config.js with your credentials
-
-# 4. Run on Android
-npx react-native run-android
-
-# 5. Run on iOS (Mac only)
-npx react-native run-ios
 ```
 
-### AWS Setup
-
-1. Create an AWS account at [aws.amazon.com](https://aws.amazon.com)
-2. Enable **Amazon Bedrock** in `us-east-1`
-3. Request access to **Amazon Nova** models (Nova Lite, Nova Sonic)
-4. Create an IAM user with `AmazonBedrockFullAccess`
-5. Add credentials to `src/services/aws-config.js`
-
----
-
-## 🏗️ Architecture
-
-```
-SenseVoice
-├── App.js                          # Root component
-├── src/
-│   ├── theme/                      # Material Design 3 tokens
-│   ├── utils/AppContext.js         # Global state (useReducer)
-│   ├── services/
-│   │   ├── NovaService.js          # All Amazon Nova API calls
-│   │   └── aws-config.js          # AWS credentials
-│   ├── navigation/AppNavigator.js  # Stack + Tab navigation
-│   ├── components/common/          # Reusable UI components
-│   └── screens/
-│       ├── onboarding/             # Welcome + Setup
-│       ├── home/                   # Dashboard
-│       ├── phase1/                 # My Voice, Quick Phrases
-│       ├── phase2/                 # My Ears, Conversation, My World
-│       ├── phase3/                 # Safety, Caregiver, Milestones
-│       ├── phase4/                 # Personalize, Language Packs
-│       └── shared/                 # Profile, Settings
+### Configure AWS credentials
+Create `src/services/aws-config.js`:
+```javascript
+export const AWS_REGION           = 'us-east-1';
+export const BEDROCK_ENDPOINT     = `https://bedrock-runtime.${AWS_REGION}.amazonaws.com`;
+export const AWS_ACCESS_KEY_ID     = 'YOUR_AWS_ACCESS_KEY_ID';
+export const AWS_SECRET_ACCESS_KEY = 'YOUR_AWS_SECRET_ACCESS_KEY';
 ```
 
----
+### Run
+```bash
+# Window 1
+npx react-native start --port 8083
 
-## 🤖 Amazon Nova Integration
+# Window 2
+npx react-native run-android --port 8083
+```
 
-| Feature | Nova Model | Usage |
-|---------|-----------|-------|
-| Sign language recognition | Nova Multimodal Embeddings | Camera frame analysis |
-| Text naturalisation | Nova 2 Lite | Make spoken text feel natural |
-| Sound classification | Nova 2 Sonic + Nova 2 Lite | Ambient sound → alert category |
-| Speech transcription | Nova 2 Sonic | Real-time speech-to-text |
-| Quick reply suggestions | Nova 2 Lite | Contextual conversation replies |
-| Scene understanding | Nova Multimodal Embeddings | Camera scene → plain language |
-| Emergency dispatch | Nova Act | SOS automation, contact alerting |
-| Daily summary | Nova 2 Lite | Caregiver natural language report |
+## Architecture
 
----
+```
+React Native App
+       ↓
+AWS Bedrock (Nova Lite) — intelligence features
+       ↓
+Nova Sonic Proxy Server (Render)
+       ↓
+Amazon Polly — neural voice (Joanna)
+       ↓
+react-native-video — audio playback
+```
 
-## 🎨 Design System
+## Nova Sonic Server
+The proxy server handles the Nova 2 Sonic bidirectional streaming protocol.
+Deploy your own: https://github.com/obooks29/kira-sonic-server
 
-- **Framework**: Material Design 3
-- **Palette**: Warm Teal (trust/safety) + Coral (joy/warmth) + Amber (celebration)
-- **Inspiration**: Duolingo's emotional warmth + Material You's expressiveness
-- **Accessibility**: WCAG 2.1 AA, haptic-first, high contrast option
-
----
-
-## 📦 Key Dependencies
-
-| Package | Purpose |
-|---------|---------|
-| react-navigation | Stack + tab navigation |
-| react-native-linear-gradient | Hero gradients |
-| react-native-camera | Sign language capture |
-| react-native-tts | Text-to-speech |
-| react-native-voice | Speech recognition |
-| react-native-haptic-feedback | Vibration alerts |
-| react-native-reanimated | Smooth animations |
-| lottie-react-native | Milestone celebration animations |
-
----
-
-## 👥 Target Users
-
-- **Primary**: Deaf and mute individuals (ages 8-65)
-- **Secondary**: Caregivers, family members, teachers, healthcare workers
-- **Market**: Nigeria (launch), then Ghana, Kenya, UK, USA
-
----
-
-## 📄 License
-
-MIT — Built with love for a more inclusive world.
-
-*"The measure of a society is how it treats those who cannot speak for themselves."*
-*SenseVoice exists to change that.*
+## Hackathon
+Amazon Nova AI Hackathon 2026 — Category: Multimodal Understanding
+#AmazonNova
