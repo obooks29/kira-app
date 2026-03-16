@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.sensevoicetemp.app-mergeDebugResources-38:/values-port/values-port.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\dmoon\\.gradle\\caches\\8.8\\transforms\\33205f6651739f324c6ab40c9c8d8188\\transformed\\appcompat-1.6.1\\res\\values-port\\values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}

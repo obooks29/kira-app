@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.sensevoicetemp.app-mergeDebugResources-38:/values-tg/values-tg.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\dmoon\\.gradle\\caches\\8.8\\transforms\\bab8eca6a53bc008ab4f1940c97dd018\\transformed\\jetified-react-android-0.73.6-debug\\res\\values-tg\\values-tg.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7",
+                        "startColumns": "4,4,4,4,4,4",
+                        "startOffsets": "55,138,208,291,361,434",
+                        "endColumns": "82,69,82,69,72,71",
+                        "endOffsets": "133,203,286,356,429,501"
+                    }
+                }
+            ]
+        }
+    ]
+}
